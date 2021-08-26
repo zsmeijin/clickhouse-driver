@@ -420,6 +420,10 @@ class Client(object):
         frame = dataframe.transpose() if transpose else dataframe
         columns = list(frame.values)
 
+        # 恢复 columns 的 dtype 信息
+        for i in range(0, len(columns)):
+            columns[i] = columns[i].astype(dataframe.dtypes[i], copy=False)
+
         return self.execute(
             query, columns, columnar=True, external_tables=external_tables,
             query_id=query_id, settings=settings
