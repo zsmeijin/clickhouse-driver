@@ -829,7 +829,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "clickhouse_driver/bufferedreader.pyx",
+  "clickhouse_driver\\bufferedreader.pyx",
   "stringsource",
   "type.pxd",
   "bool.pxd",

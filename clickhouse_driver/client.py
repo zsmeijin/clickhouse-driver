@@ -418,11 +418,11 @@ class Client(object):
             raise RuntimeError('Extras for NumPy must be installed')
 
         frame = dataframe.transpose() if transpose else dataframe
-        columns = list(frame.values)
+        columns = []
 
         # 恢复 columns 的 dtype 信息
-        for i in range(0, len(columns)):
-            columns[i] = columns[i].astype(dataframe.dtypes[i], copy=False)
+        for i in range(0, len(dataframe.columns)):
+            columns.append(frame.iloc[i, :].values.astype(dataframe.dtypes[i], copy=False))
 
         return self.execute(
             query, columns, columnar=True, external_tables=external_tables,
