@@ -165,6 +165,7 @@ settings = {
     'output_format_parquet_row_group_size': SettingUInt64,
 
     'use_client_time_zone': SettingBool,
+    'use_time_zone': SettingString,
 
     'send_progress_in_http_headers': SettingBool,
 

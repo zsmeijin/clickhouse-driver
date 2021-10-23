@@ -139,9 +139,13 @@ def create_numpy_datetime_column(spec, column_options):
         # 由于 apply_timezones_after_read 方法中 to_numpy 时会丢失时区信息，因此需要 tz_localize(None) 保证显示的日期字符串正确
         # offset_naive = False
     else:
-        if not context.settings.get('use_client_time_zone', False):
-            if local_timezone != context.server_info.timezone:
-                tz_name = context.server_info.timezone
+        if context.settings.get('use_time_zone', None) is not None:
+            # 当配置 use_time_zone 参数后优先采用该参数配置查询时区
+            tz_name = context.settings.get('use_time_zone')
+        else:
+            if not context.settings.get('use_client_time_zone', False):
+                if local_timezone != context.server_info.timezone:
+                    tz_name = context.server_info.timezone
 
     if tz_name:
         timezone = get_timezone(tz_name)

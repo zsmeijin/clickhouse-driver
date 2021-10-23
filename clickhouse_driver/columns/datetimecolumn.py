@@ -192,16 +192,20 @@ def create_datetime_column(spec, column_options):
         tz_name = spec[1:-2]
         offset_naive = False
     else:
-        if not context.settings.get('use_client_time_zone', False):
-            try:
-                local_timezone = get_localzone().key
-            except AttributeError:
-                local_timezone = get_localzone().zone
-            except Exception:
-                local_timezone = None
+        if context.settings.get('use_time_zone', None) is not None:
+            # 当配置 use_time_zone 参数后优先采用该参数配置查询时区
+            tz_name = context.settings.get('use_time_zone')
+        else:
+            if not context.settings.get('use_client_time_zone', False):
+                try:
+                    local_timezone = get_localzone().key
+                except AttributeError:
+                    local_timezone = get_localzone().zone
+                except Exception:
+                    local_timezone = None
 
-            if local_timezone != context.server_info.timezone:
-                tz_name = context.server_info.timezone
+                if local_timezone != context.server_info.timezone:
+                    tz_name = context.server_info.timezone
 
     if tz_name:
         timezone = get_timezone(tz_name)
